@@ -11,7 +11,9 @@ export default function App() {
       <Grid container spacing={4}>
         <Grid item xs={12}>
           <Header>
-            <Typography variant='h3' sx={{textAlign:'center', color:'white'}}>Quiz</Typography>
+            <Typography variant='h3' sx={{ textAlign: 'center', color: 'white' }}>
+              Quiz
+            </Typography>
           </Header>
         </Grid>
         <Grid item xs={12} md={3}>
@@ -32,7 +34,9 @@ export default function App() {
         </Grid>
         <Grid item xs={12}>
           <Footer>
-            <Typography sx={{textAlign:'center', marginTop: '25px',}}>©2023 Oleksandr Yatskiv | All rights reserved.</Typography>
+            <Typography sx={{ textAlign: 'center', marginTop: '25px', }}>
+              ©2023 Oleksandr Yatskiv | All rights reserved.
+            </Typography>
           </Footer>
         </Grid>
       </Grid>
