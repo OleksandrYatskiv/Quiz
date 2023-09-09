@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { quizzes } from "../../api/Quizzes/Quizzes";
-import Card from "../../components/Card/Card";
+// import Card from "../../components/Card/Card";
 import CircularIndeterminate from "../../components/Loader/Loader";
-// import CircularIndeterminate from "../../components/Loader/Loader";
-// import ClipLoader from "react-spinners/ClipLoader";
+import Card from "../../components/Card/ClassedCard";
 
 export default function Cards() {
   const [cardList, setCardList] = useState([]);
@@ -12,7 +11,6 @@ export default function Cards() {
 
   const fetchCardList = useCallback(async () => {
     setLoading(true);
-
     try {
       const response = await quizzes.get();
       setCardList(response);
