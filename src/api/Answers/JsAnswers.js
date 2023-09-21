@@ -1,31 +1,31 @@
 import axios from '../service';
 
-const quizzes = {
-  get: () => axios.get('/Quizzes')
+const answers = {
+  get: () => axios.get('/Js-quiz-questions')
     .then(({ data }) => data)
     .catch((err) => {
       throw new Error(err);
     }),
-  getById: (id) => axios.get(`/Quizzes/${id}`)
+  getById: (id) => axios.get(`/Js-quiz-questions/${id}`)
     .then(({ data }) => data)
     .catch((err) => {
       throw new Error(err);
     }),
-  post: (params) => axios.post('/Quizzes', params)
+  post: (params) => axios.post('/Js-quiz-questions', params)
     .then(({ data }) => data)
     .catch((err) => {
       throw new Error(err);
     }),
-  put: (id, params) => axios.put(`/Quizzes/${id}`, params)
+  put: (id, params) => axios.put(`/Js-quiz-questions/${id}`, params)
     .then(({ data }) => data)
     .catch((err) => {
       throw new Error(err);
     }),
-  delete: (id) => axios.delete(`/Quizzes/${id}`)
+  delete: (id) => axios.delete(`/Js-quiz-questions/${id}`)
     .then(({ data }) => data)
     .catch((err) => {
       throw new Error(err);
     }),
 };
 
-export { quizzes };
+export { answers };

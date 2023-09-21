@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { styled } from '@mui/material';
 
 export const ModalWrapp = styled('div')(() => ({
   position: 'fixed',
@@ -24,9 +24,9 @@ export const Action = styled('div')(() => ({
   fontWeight: 'bold',
   color: '#2196F3',
   transition: 'color 0.2s',
-  ":hover": {
-      color: '#0D47A1',
-      cursor: 'pointer',
+  ':hover': {
+    color: '#0D47A1',
+    cursor: 'pointer',
   },
 }));
 

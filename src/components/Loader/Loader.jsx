@@ -1,7 +1,7 @@
 import * as React from 'react';
-import ClipLoader from "react-spinners/ClipLoader";
+import ClipLoader from 'react-spinners/ClipLoader';
 
-export default function CircularIndeterminate({loading}) {
+export default function CircularIndeterminate({ loading }) {
   return (<ClipLoader
     color={'#46B5FF'}
     loading={loading}
