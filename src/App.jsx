@@ -5,7 +5,8 @@ import NotFoundPage from './pages/NotFound/NotFoundPage';
 import Layout from './components/Layout/Layout';
 import CreateQuizPage from './pages/CreateQuiz/CreateQuizPage';
 import Favourites from './pages/Favourites/Favourites';
-import QuizStartPage from './pages/QuizPage/Quiz';
+import Quiz from './pages/QuizPage/Quiz';
+import QuizStartPage from './pages/QuizPage/StartPage';
 
 export default function App() {
   return (
@@ -16,7 +17,8 @@ export default function App() {
             <Route path="*" element={<NotFoundPage />} />
             <Route path='quiz/create' element={<CreateQuizPage />} />
             <Route path='quiz/favourites' element={<Favourites />} />
-            <Route path='quiz/:quizId' element={<QuizStartPage />} />
+            <Route path='quiz/:quizId' element={<Quiz />} />
+            <Route path='quizStartPage/:quizId' element={<QuizStartPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

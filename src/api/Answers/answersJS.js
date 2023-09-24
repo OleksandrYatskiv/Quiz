@@ -1,6 +1,6 @@
 import axios from '../service';
 
-const answers = {
+const answersJS = {
   get: () => axios.get('/Js-quiz-questions')
     .then(({ data }) => data)
     .catch((err) => {
@@ -28,4 +28,4 @@ const answers = {
     }),
 };
 
-export { answers };
+export { answersJS };

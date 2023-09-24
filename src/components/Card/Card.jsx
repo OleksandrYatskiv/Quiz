@@ -53,7 +53,7 @@ export default function Card({ quiz, onDelete }) {
         <Typography sx={{ textAlign: 'center' }}>{quiz.description}</Typography>
         <CardActionContainer>
           <Action onClick={handleShowModal}>Show more info</Action>
-          <Link to={`/quiz/${quiz.id}`} style={{ textDecoration: 'none' }}>
+          <Link to={`/quizStartPage/${quiz.id}`} style={{ textDecoration: 'none' }}>
             <Action>Start Quiz</Action>
           </Link>
         </CardActionContainer>
@@ -62,4 +62,3 @@ export default function Card({ quiz, onDelete }) {
     </>
   );
 }
-// onClick={() => alert('Quiz started!')}

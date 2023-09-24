@@ -11,4 +11,6 @@ export const Footer = styled('footer')(() => ({
   color: 'white',
   padding: '10px 0',
   width: '100%',
+  position: 'fixed',
+  bottom: '0',
 }));

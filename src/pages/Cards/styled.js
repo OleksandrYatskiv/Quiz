@@ -33,6 +33,7 @@ export const Main = styled('main')(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     gridTemplateColumns: '1fr 1fr 1fr',
   },
+  marginBottom: '100px',
 }));
 
 export const InputContainer = styled('div')(() => ({

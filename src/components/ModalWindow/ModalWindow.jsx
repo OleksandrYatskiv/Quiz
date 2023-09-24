@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Paper, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 import {
   Action, ActionWrapp, Image, ModalWrapp,
 } from './styled';
@@ -24,7 +25,7 @@ export default function ModalWindow({ quiz }) {
         </Typography>
         <Typography>
           The test contains 10 questions.
-          You have one minute for each question, the entire test can last a maximum of 10 minutes.
+          You have 30 seconds for each question.
         </Typography>
         <Typography>
           The test is not official, it&apos;s just a nice way to see how much you know,
@@ -38,7 +39,9 @@ export default function ModalWindow({ quiz }) {
           At the end of the Quiz, your total score will be displayed. Maximum score is 10 points.
         </Typography>
         <ActionWrapp>
-          <Action onClick={() => alert('Quiz started!')}>Start Quiz</Action>
+          <Link to={`/quiz/${quiz.id}`} style={{ textDecoration: 'none' }}>
+            <Action>Start Quiz</Action>
+          </Link>
           <Action onClick={handleClose}>Close</Action>
         </ActionWrapp>
       </Paper>

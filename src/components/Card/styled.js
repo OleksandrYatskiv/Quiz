@@ -7,6 +7,7 @@ export const CardContainer = styled('div')(() => ({
   ':hover': {
     transform: 'translateY(-5px)',
   },
+  justifySelf: 'center',
 }));
 
 export const CardImg = styled('img')(() => ({

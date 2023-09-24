@@ -2,7 +2,9 @@
 import { Grid, Typography } from '@mui/material';
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import { Footer, Header } from './styled';
+import {
+  Footer, Header,
+} from './styled';
 import instagramLogo from '../../images/instagram.svg';
 import githubLogo from '../../images/github-mark-white.svg';
 

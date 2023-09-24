@@ -1,15 +1,12 @@
-import Button from '@mui/material/Button';
-import { Typography, styled } from '@mui/material';
+import { Button, Typography, styled } from '@mui/material';
 
 export const QuizStartPageContainer = styled('div')(() => ({
   backgroundColor: '#fff',
-  // height: '77.5vh', // bruh height
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  marginBottom: '110px',
-  // padding: '0 24px 24px 24px',
+  marginBottom: '100px',
 }));
 
 export const QuizContent = styled('div')(() => ({
@@ -42,7 +39,65 @@ export const StartButton = styled(Button)(({ theme }) => ({
 }));
 
 export const QuizImage = styled('img')(() => ({
-  maxWidth: '200px',
+  maxWidth: '100px',
+  display: 'block',
+  margin: '20px auto',
+}));
+
+export const ContainerUl = styled('ul')(() => ({
+  listStyle: 'none',
+  padding: 0,
+}));
+
+export const ItemLi = styled('li')(({ theme }) => ({
+  backgroundColor: '#2196F3',
+  color: '#fff',
+  padding: theme.spacing(2),
+  marginBottom: theme.spacing(1),
+  cursor: 'pointer',
+  '&:hover': {
+    backgroundColor: '#1976D2',
+  },
+  borderRadius: '10px',
+  minWidth: '300px',
+  textAlign: 'center',
+}));
+
+export const RestartBtn = styled('button')(({ theme }) => ({
+  backgroundColor: '#FF0000',
+  color: '#FFFFFF',
+  padding: theme.spacing(2, 4),
+  fontSize: '18px',
+  fontWeight: 'bold',
+  '&:hover': {
+    backgroundColor: '#FF3333',
+  },
+  marginTop: '30px',
+  borderRadius: '10px',
+  cursor: 'pointer',
+}));
+
+export const BackHomeBtn = styled('button')(({ theme }) => ({
+  backgroundColor: '#2196F3',
+  color: '#FFFFFF',
+  padding: theme.spacing(2, 4),
+  fontSize: '18px',
+  fontWeight: 'bold',
+  '&:hover': {
+    backgroundColor: '#1976D2',
+  },
+  marginTop: '30px',
+  marginLeft: '30px',
+  borderRadius: '10px',
+  cursor: 'pointer',
+}));
+
+export const BtnContainer = styled('div')(() => ({
+  display: 'flex',
+}));
+
+export const StartQuizImage = styled('img')(() => ({
+  maxWidth: '300px',
   display: 'block',
   margin: '20px auto',
 }));
