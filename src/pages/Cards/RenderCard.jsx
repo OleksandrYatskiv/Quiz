@@ -1,56 +1,64 @@
-import React, { useCallback, useEffect, useState } from 'react';
+/* eslint-disable no-nested-ternary */
+import React, { useCallback, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { quizzes } from '../../api/Quizzes/Quizzes';
 import Card from '../../components/Card/Card';
 import CircularIndeterminate from '../../components/Loader/Loader';
 import {
-  CreateBtn, Description, FavBtn, InputContainer, Main, SearchInput,
+  CreateBtn,
+  Description,
+  FavBtn,
+  InputContainer,
+  Main,
+  SearchInput,
 } from './styled';
 import addBtn from '../../images/create.svg';
 import heart from '../../images/favourites.svg';
+import {
+  setCardList,
+  setLoading,
+  setError,
+  setSearchTerm,
+  deleteCard,
+} from '../../components/store/quizSlice';
+import { quizzes } from '../../api/Quizzes/Quizzes';
 
 export default function RenderCards() {
-  const [cardList, setCardList] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const dispatch = useDispatch();
+  const {
+    cardList, loading, error, searchTerm,
+  } = useSelector((state) => state.quiz);
 
   const fetchCardList = useCallback(async () => {
-    setLoading(true);
+    dispatch(setLoading(true));
 
     try {
       const response = await quizzes.get();
-      setCardList(response);
-    } catch (error) {
-      setError(error);
-      console.error(error);
+      dispatch(setCardList(response));
+    } catch (err) {
+      dispatch(setError(err));
+      console.error(err);
     } finally {
-      setLoading(false);
+      dispatch(setLoading(false));
     }
-  }, [setError, setLoading]);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchCardList();
-  }, []);
-
-  if (loading) {
-    return (<CircularIndeterminate loading={loading} />);
-  }
-  if (error) return <p>{error.message}</p>;
+  }, [fetchCardList]);
 
   const handleDeleteCard = (idToDelete) => {
-    const updatedQuizzes = cardList.filter((quiz) => quiz.id !== idToDelete);
-    setCardList(updatedQuizzes);
+    dispatch(deleteCard(idToDelete));
   };
 
   return (
     <>
       <InputContainer>
         <SearchInput
-          placeholder='Find a quiz'
+          placeholder="Find a quiz"
           value={searchTerm}
           onChange={(event) => {
-            setSearchTerm(event.target.value);
+            dispatch(setSearchTerm(event.target.value));
           }}
         />
         <Link to="/quiz/create">
@@ -63,16 +71,22 @@ export default function RenderCards() {
         </Link>
       </InputContainer>
       <Main>
-        {cardList
-          .filter((card) => {
-            if (searchTerm === '') {
-              return true;
-            }
-            return card.name.toLowerCase().includes(searchTerm.toLowerCase());
-          })
-          .map((card) => (
-            <Card key={card.id} quiz={card} onDelete={() => handleDeleteCard(card.id)} />
-          ))}
+        {loading ? (
+          <CircularIndeterminate loading={loading} />
+        ) : error ? (
+          <p>{error.message}</p>
+        ) : (
+          cardList
+            .filter((card) => {
+              if (searchTerm === '') {
+                return true;
+              }
+              return card.name.toLowerCase().includes(searchTerm.toLowerCase());
+            })
+            .map((card) => (
+              <Card key={card.id} quiz={card} onDelete={() => handleDeleteCard(card.id)} />
+            ))
+        )}
       </Main>
     </>
   );

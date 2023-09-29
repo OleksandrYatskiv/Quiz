@@ -25,3 +25,13 @@ export const Action = styled('div')(({ theme }) => ({
     display: 'none',
   },
 }));
+
+export const Headline = styled('p')(({ theme }) => ({
+  textAlign: 'center',
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
+  },
+  fontSize: '25px',
+  color: '#0763f7',
+  fontWeight: 'bold',
+}));
