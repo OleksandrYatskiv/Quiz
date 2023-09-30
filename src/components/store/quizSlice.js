@@ -8,6 +8,7 @@ const quizSlice = createSlice({
     loading: false,
     error: null,
     searchTerm: '',
+    favouriteList: [],
   },
   reducers: {
     setCardList: (state, action) => {
@@ -25,6 +26,18 @@ const quizSlice = createSlice({
     deleteCard: (state, action) => {
       state.cardList = state.cardList.filter((quiz) => quiz.id !== action.payload);
     },
+    setFavouritesList: (state, action) => {
+      state.favouriteList = state.favouriteList.map((quiz) => {
+        if (quiz.id === action.payload) {
+          return {
+            ...quiz,
+            favourite: !quiz.favourite,
+          };
+        }
+
+        return quiz;
+      });
+    },
   },
 });
 
@@ -34,6 +47,7 @@ export const {
   setError,
   setSearchTerm,
   deleteCard,
+  setFavouritesList,
 } = quizSlice.actions;
 
 export default quizSlice.reducer;

@@ -3,6 +3,7 @@
 import { Typography } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import {
   Action, AddToFavourite, CardActionContainer, CardContainer, CardImg, Delete,
 } from './styled';
@@ -11,10 +12,12 @@ import deleteImg from '../../images/delete.svg';
 import addToFavouriteImg from '../../images/addToFavourite.svg';
 import favouriteImg from '../../images/favourites.svg';
 import { quizzes } from '../../api/Quizzes/Quizzes';
+import { setFavouritesList } from '../store/quizSlice';
 
 export default function Card({ quiz, onDelete }) {
   const [isShowModal, setShowModal] = useState(false);
   const [isFavourite, setFavourite] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const initialFavourite = JSON.parse(quiz.isFavourite);
@@ -41,6 +44,7 @@ export default function Card({ quiz, onDelete }) {
     };
 
     await quizzes.put(quiz.id, JSON.stringify(params));
+    dispatch(setFavouritesList(quiz.id)); // new line
   };
 
   return (
