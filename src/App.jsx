@@ -8,7 +8,7 @@ import CreateQuizPage from './pages/CreateQuiz/CreateQuizPage';
 import Favourites from './pages/Favourites/Favourites';
 import Quiz from './pages/QuizPage/Quiz';
 import QuizStartPage from './pages/QuizPage/StartPage';
-import store from './components/store/store';
+import store from './store/store';
 
 export default function App() {
   return (

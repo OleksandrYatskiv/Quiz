@@ -4,12 +4,12 @@ import { useSelector } from 'react-redux';
 import { Action, Headline, Sidebar } from './styled';
 
 function SidebarComponent() {
-  const { cardList } = useSelector((state) => state.quiz);
+  const { quizzes } = useSelector((state) => state.quizReducer);
   return (
     <>
       <Headline>Quick Start</Headline>
       <Sidebar>
-        {cardList.map((quiz) => (
+        {quizzes.map((quiz) => (
           <Link key={quiz.id} style={{ textDecoration: 'none' }} to={`/quiz/${quiz.id}`}>
             <Action>
               {quiz.name}

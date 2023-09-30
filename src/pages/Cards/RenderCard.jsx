@@ -1,5 +1,7 @@
 /* eslint-disable no-nested-ternary */
-import React, { useCallback, useEffect } from 'react';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Card from '../../components/Card/Card';
@@ -14,41 +16,39 @@ import {
 } from './styled';
 import addBtn from '../../images/create.svg';
 import heart from '../../images/favourites.svg';
-import {
-  setCardList,
-  setLoading,
-  setError,
-  setSearchTerm,
-  deleteCard,
-} from '../../components/store/quizSlice';
-import { quizzes } from '../../api/Quizzes/Quizzes';
+import actions from '../../store/services/quiz/actions';
+import thunks from '../../store/services/quiz/thunks';
 
 export default function RenderCards() {
+  const { quizzes, filteredQuizzes, filter } = useSelector((state) => state.quizReducer);
   const dispatch = useDispatch();
-  const {
-    cardList, loading, error, searchTerm,
-  } = useSelector((state) => state.quiz);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const fetchCardList = useCallback(async () => {
-    dispatch(setLoading(true));
+  const quizzesList = useMemo(() => (filter ? filteredQuizzes : quizzes), [quizzes, filter, filteredQuizzes]);
+
+  const fetchQuizzesList = useCallback(async () => {
+    setLoading(true);
 
     try {
-      const response = await quizzes.get();
-      dispatch(setCardList(response));
+      await dispatch(thunks.fetchQuizzes());
     } catch (err) {
-      dispatch(setError(err));
-      console.error(err);
+      setError(err);
     } finally {
-      dispatch(setLoading(false));
+      setLoading(false);
     }
   }, [dispatch]);
 
   useEffect(() => {
-    fetchCardList();
-  }, [fetchCardList]);
+    fetchQuizzesList();
+  }, [fetchQuizzesList]);
 
-  const handleDeleteCard = (idToDelete) => {
-    dispatch(deleteCard(idToDelete));
+  // const handleDeleteCard = (idToDelete) => {
+  //   dispatch(deleteCard(idToDelete));
+  // };
+
+  const handleChangeFilter = (e) => {
+    dispatch(actions.filterAction(e.target.value));
   };
 
   return (
@@ -56,10 +56,8 @@ export default function RenderCards() {
       <InputContainer>
         <SearchInput
           placeholder="Find a quiz"
-          value={searchTerm}
-          onChange={(event) => {
-            dispatch(setSearchTerm(event.target.value));
-          }}
+          value={filter}
+          onChange={handleChangeFilter}
         />
         <Link to="/quiz/create">
           <CreateBtn src={`${addBtn}`}></CreateBtn>
@@ -76,15 +74,13 @@ export default function RenderCards() {
         ) : error ? (
           <p>{error.message}</p>
         ) : (
-          cardList
-            .filter((card) => {
-              if (searchTerm === '') {
-                return true;
-              }
-              return card.name.toLowerCase().includes(searchTerm.toLowerCase());
-            })
-            .map((card) => (
-              <Card key={card.id} quiz={card} onDelete={() => handleDeleteCard(card.id)} />
+          quizzesList
+            .map((quiz) => (
+              <Card
+                key={quiz.id}
+                quiz={quiz}
+                // onDelete={() => handleDeleteCard(quiz.id)}
+              />
             ))
         )}
       </Main>

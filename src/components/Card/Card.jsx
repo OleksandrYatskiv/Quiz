@@ -12,7 +12,7 @@ import deleteImg from '../../images/delete.svg';
 import addToFavouriteImg from '../../images/addToFavourite.svg';
 import favouriteImg from '../../images/favourites.svg';
 import { quizzes } from '../../api/Quizzes/Quizzes';
-import { setFavouritesList } from '../store/quizSlice';
+import thunks from '../../store/services/quiz/thunks';
 
 export default function Card({ quiz, onDelete }) {
   const [isShowModal, setShowModal] = useState(false);
@@ -43,8 +43,7 @@ export default function Card({ quiz, onDelete }) {
       isFavourite: !isFavourite,
     };
 
-    await quizzes.put(quiz.id, JSON.stringify(params));
-    dispatch(setFavouritesList(quiz.id)); // new line
+    await dispatch(thunks.putFavQuiz(params));
   };
 
   return (
