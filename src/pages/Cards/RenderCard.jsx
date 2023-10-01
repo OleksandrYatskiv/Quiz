@@ -43,9 +43,9 @@ export default function RenderCards() {
     fetchQuizzesList();
   }, [fetchQuizzesList]);
 
-  // const handleDeleteCard = (idToDelete) => {
-  //   dispatch(deleteCard(idToDelete));
-  // };
+  const handleDeleteCard = (idToDelete) => {
+    dispatch(thunks.deleteQuiz(idToDelete));
+  };
 
   const handleChangeFilter = (e) => {
     dispatch(actions.filterAction(e.target.value));
@@ -79,7 +79,7 @@ export default function RenderCards() {
               <Card
                 key={quiz.id}
                 quiz={quiz}
-                // onDelete={() => handleDeleteCard(quiz.id)}
+                onDelete={() => handleDeleteCard(quiz.id)}
               />
             ))
         )}

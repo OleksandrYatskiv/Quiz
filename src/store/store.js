@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-import { quizzesReducer } from './services/quiz';
+import { quizReducer } from './services/quiz';
 
 const rootReducer = combineReducers({
-  quizzesReducer,
+  quizReducer,
 });
 
 const store = configureStore({ reducer: rootReducer });

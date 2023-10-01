@@ -11,25 +11,35 @@ const initialState = {
   favouritesList: [],
 };
 
-export const quizzesReducer = createSlice({
+export const quizReducer = createSlice({
   name: moduleName,
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(actions.filterAction, (state, { payload }) => {
       state.filter = payload;
-      state.filteredCountries = state.countries.filter((quiz) => {
-        const quizIntial = quiz.country.toLowerCase();
-        return quizIntial.indexOf(payload.toLowerCase()) !== -1; // rewrite using includes method
+      state.filteredQuizzes = state.quizzes.filter((quiz) => {
+        const quizIntial = quiz.name.toLowerCase();
+        return quizIntial.includes(payload.toLowerCase());
       });
+    });
+    builder.addCase(actions.filterFavQuizzesAction, (state) => {
+      state.favouritesList = state.quizzes.filter((quiz) => quiz.isFavourite);
     });
     builder.addCase(thunks.fetchQuizzes.fulfilled, (state, { payload }) => {
       state.quizzes = payload;
     });
     builder.addCase(thunks.putFavQuiz.fulfilled, (state, { payload }) => {
-      state.quizzes = payload;
+      const quizToChangeIndex = state.quizzes.findIndex((quiz) => quiz.id === payload.id);
+
+      if (quizToChangeIndex !== -1) state.quizzes[quizToChangeIndex] = payload.quiz;
+    });
+    builder.addCase(thunks.deleteQuiz.fulfilled, (state, { payload }) => {
+      state.quizzes = state.quizzes.filter((quiz) => quiz.id !== payload);
+      state.favouritesList = state.favouritesList.filter((quiz) => quiz.id !== payload);
+      state.filteredQuizzes = state.filteredQuizzes.filter((quiz) => quiz.id !== payload);
     });
   },
 });
 
-export default quizzesReducer.reducer;
+export default quizReducer.reducer;

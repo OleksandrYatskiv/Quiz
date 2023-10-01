@@ -1,26 +1,28 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Main } from '../Cards/styled';
 import Card from '../../components/Card/Card';
 import thunks from '../../store/services/quiz/thunks';
+import actions from '../../store/services/quiz/actions';
 
 export default function Favourites() {
   const dispatch = useDispatch();
-  const {
-    favouritesList,
-  } = useSelector((state) => state.quiz);
+  const { favouritesList } = useSelector((state) => state.quizReducer);
 
-  const handleDeleteCard = (quiz) => {
-    const params = {
-      image: quiz.image,
-      name: quiz.name,
-      describtion: quiz.description,
-      id: quiz.id,
-      isFavourite: !quiz.isFavourite,
-    };
-    dispatch(thunks.putFavQuiz(params));
+  const favList = useMemo(() => (favouritesList), [favouritesList]);
+
+  const filterFavQuizzes = () => {
+    dispatch(actions.filterFavQuizzesAction());
+  };
+
+  useEffect(() => {
+    filterFavQuizzes();
+  }, []);
+
+  const handleDelete = (id) => {
+    dispatch(thunks.deleteQuiz(id));
   };
 
   return (
@@ -30,8 +32,8 @@ export default function Favourites() {
         {!favouritesList?.length ? (
           <Typography variant='h6' sx={{ textAlign: 'center', marginTop: '50px', width: '100%' }}>You have no favourite quizzes.</Typography>
         ) : (
-          favouritesList.map((card) => (
-            <Card key={card.id} quiz={card} onDelete={() => handleDeleteCard(card)} />
+          favList.map((card) => (
+            <Card key={card.id} quiz={card} onDelete={() => handleDelete(card.id)} filter={filterFavQuizzes} />
           ))
         )}
       </Main>
