@@ -40,17 +40,9 @@ This is a quiz app project that allows users to test their knowledge on various 
 
 - Score tracking and display
 
-- Correct/incorrect answer feedback
-
-- Randomized question order
-
 - Responsive design for various devices
 
 - High-quality questions and answers database
-
-- Leaderboard to display top scores (optional)
-
-- Share your score on social media (optional)
 
   
 
