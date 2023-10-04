@@ -1,16 +1,23 @@
 import React from 'react';
-import { Action, Sidebar } from './styled';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Action, Headline, Sidebar } from './styled';
 
 function SidebarComponent() {
+  const { quizzes } = useSelector((state) => state.quizReducer);
   return (
-    <Sidebar>
-      <Action>JS</Action>
-      <Action>React</Action>
-      <Action>HTML</Action>
-      <Action>CSS</Action>
-      <Action>Java</Action>
-      <Action>Python</Action>
-    </Sidebar>
+    <>
+      <Headline>Quick Start</Headline>
+      <Sidebar>
+        {quizzes.map((quiz) => (
+          <Link key={quiz.id} style={{ textDecoration: 'none' }} to={`/quiz/${quiz.id}`}>
+            <Action>
+              {quiz.name}
+            </Action>
+          </Link>
+        ))}
+      </Sidebar>
+    </>
   );
 }
 

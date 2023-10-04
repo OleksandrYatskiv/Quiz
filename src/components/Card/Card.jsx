@@ -3,6 +3,7 @@
 import { Typography } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import {
   Action, AddToFavourite, CardActionContainer, CardContainer, CardImg, Delete,
 } from './styled';
@@ -10,24 +11,20 @@ import ModalWindow from '../ModalWindow/ModalWindow';
 import deleteImg from '../../images/delete.svg';
 import addToFavouriteImg from '../../images/addToFavourite.svg';
 import favouriteImg from '../../images/favourites.svg';
-import { quizzes } from '../../api/Quizzes/Quizzes';
+import thunks from '../../store/services/quiz/thunks';
 
-export default function Card({ quiz, onDelete }) {
+export default function Card({ quiz, onDelete, filter }) {
   const [isShowModal, setShowModal] = useState(false);
   const [isFavourite, setFavourite] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const initialFavourite = JSON.parse(quiz.isFavourite);
     setFavourite(initialFavourite);
-  }, [quiz.isFavourite]);
+  }, [quiz.isFavourite, isFavourite]);
 
   const handleShowModal = () => {
     setShowModal(!isShowModal);
-  };
-
-  const handleDelete = () => {
-    quizzes.delete(quiz.id);
-    onDelete();
   };
 
   const handleFavourite = async () => {
@@ -40,14 +37,15 @@ export default function Card({ quiz, onDelete }) {
       isFavourite: !isFavourite,
     };
 
-    await quizzes.put(quiz.id, JSON.stringify(params));
+    await dispatch(thunks.putFavQuiz(params));
+    if (filter) filter();
   };
 
   return (
     <>
       <CardContainer>
-        <AddToFavourite onClick={async () => await handleFavourite()} src={isFavourite ? favouriteImg : addToFavouriteImg} />
-        <Delete onClick={handleDelete} src={`${deleteImg}`}></Delete>
+        <AddToFavourite onClick={handleFavourite} src={isFavourite ? favouriteImg : addToFavouriteImg} />
+        <Delete onClick={onDelete} src={`${deleteImg}`}></Delete>
         <CardImg src={quiz.image} alt='Quiz image'></CardImg>
         <Typography sx={{ textAlign: 'center', margin: '10px 0' }} variant="h5">{quiz.name}</Typography>
         <Typography sx={{ textAlign: 'center' }}>{quiz.description}</Typography>

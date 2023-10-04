@@ -24,6 +24,7 @@ import { answersHTML } from '../../api/Answers/answersHTML';
 import { answersCSS } from '../../api/Answers/answersCSS';
 import { answersJava } from '../../api/Answers/answersJava';
 import { answersPython } from '../../api/Answers/answersPython';
+import NotFoundPage from '../NotFound/NotFoundPage';
 
 export default function Quiz() {
   const { quizId } = useParams();
@@ -142,6 +143,8 @@ export default function Quiz() {
   }, [timeLeft]);
 
   if (loading) return (<CircularIndeterminate loading={loading} />);
+
+  if (!questions?.length) return (<NotFoundPage />);
 
   if (showResults && questions.length > 0) {
     return (
