@@ -24,9 +24,9 @@ export const quizRules = {
     minLength: { value: 5, message: ruleTexts.minLength(5) },
     maxLength: { value: 25, message: ruleTexts.maxLength(25) },
   },
-  quizAnswer: {
-    required: { value: false },
-    minLength: { value: 5, message: ruleTexts.minLength(5) },
-    maxLength: { value: 25, message: ruleTexts.maxLength(25) },
-  },
+  // quizAnswer: {
+  //   required: { value: false },
+  //   minLength: { value: 1, message: ruleTexts.minLength(5) },
+  //   maxLength: { value: 25, message: ruleTexts.maxLength(25) },
+  // },
 };
