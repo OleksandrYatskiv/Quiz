@@ -1,139 +1,149 @@
-import {
-  Button, Container, Grid, Typography, Checkbox,
-} from '@mui/material';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import { useNavigate } from 'react-router-dom';
+import { Checkbox, Typography } from '@mui/material';
+import { answersUserQuiz } from '../../api/Answers/answersUserQuiz';
 import InputText from '../../components/Forms/InputText';
 import { quizRules } from '../../components/Forms/constants';
-import { answersUserQuiz } from '../../api/Answers/answersUserQuiz';
 
-export default function CreateQuestionsPage() {
+function QuestionForm() {
   const navigate = useNavigate();
-
-  const [quizData, setQuizData] = useState([
+  const {
+    control, handleSubmit, register, getValues,
+  } = useForm();
+  const [questions, setQuestions] = useState([
     {
-      text: '',
-      options: [
-        {
-          id: 0,
-          text: '',
-          isCorrect: false,
-        },
-        {
-          id: 1,
-          text: '',
-          isCorrect: false,
-        },
-        {
-          id: 2,
-          text: '',
-          isCorrect: false,
-        },
-        {
-          id: 3,
-          text: '',
-          isCorrect: false,
-        },
-      ],
+      question: '',
+      options: [{ id: 0, text: '', isCorrect: false }],
     },
   ]);
 
-  const { control, handleSubmit } = useForm();
+  const addQuestion = () => {
+    const newQuestion = {
+      question: '',
+      options: [{ id: 0, text: '', isCorrect: false }],
+    };
+    setQuestions([...questions, newQuestion]);
+  };
+
+  const addOption = (questionIndex) => {
+    const newOptions = [
+      ...questions[questionIndex].options,
+      {
+        id: questions[questionIndex].options.length,
+        text: '',
+        isCorrect: false,
+      },
+    ];
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].options = newOptions;
+    setQuestions(updatedQuestions);
+  };
+
+  const removeOption = (questionIndex, optionId) => {
+    const newOptions = questions[questionIndex].options.filter((option) => option.id !== optionId);
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].options = newOptions;
+    setQuestions(updatedQuestions);
+  };
 
   const onSubmit = () => {
-    answersUserQuiz.post(quizData);
-    console.log(quizData);
+    const formData = getValues();
+
+    const formattedQuestions = formData.questions.map((q) => {
+      const formattedOptions = q.options
+        .filter((option) => option.text.trim() !== '')
+        .map((option, optionIndex) => ({
+          id: optionIndex,
+          text: option.text,
+          isCorrect: option.isCorrect || false,
+        }));
+      return {
+        text: q.question,
+        options: formattedOptions,
+      };
+    });
+
+    formattedQuestions.forEach((formattedData) => {
+      answersUserQuiz.post(formattedData);
+    });
+
     navigate('/');
   };
 
-  const addQuestion = () => {
-    setQuizData((prevData) => [
-      ...prevData,
-      {
-        text: '',
-        options: [
-          {
-            id: 0,
-            text: '',
-            isCorrect: false,
-          },
-          {
-            id: 1,
-            text: '',
-            isCorrect: false,
-          },
-          {
-            id: 2,
-            text: '',
-            isCorrect: false,
-          },
-          {
-            id: 3,
-            text: '',
-            isCorrect: false,
-          },
-        ],
-      },
-    ]);
-  };
-
-  const handleCheckboxChange = (questionIndex, optionIndex) => (event) => {
-    const isChecked = event.target.checked;
-    setQuizData((prevData) => {
-      const updatedData = [...prevData];
-      updatedData[questionIndex].options[optionIndex].isCorrect = isChecked;
-      return updatedData;
-    });
-  };
-
   return (
-    <Container sx={{ margin: '100px auto' }}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {quizData.map((question, questionIndex) => (
+    <>
+      <Typography sx={{ mt: '50px' }} variant="h5" align="center" gutterBottom>
+        Creating answers
+      </Typography>
+      <form style={{ margin: '100px' }} onSubmit={handleSubmit(onSubmit)}>
+        {questions.map((question, questionIndex) => (
           <div key={questionIndex}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Typography variant="h5" align="center" gutterBottom>
-                  Creating questions
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
+            <InputText
+              fullWidth
+              control={control}
+              defaultValue=""
+              rules={quizRules.quizQuestion}
+              name={`questions[${questionIndex}].question`}
+              label={`Question ${questionIndex + 1}`} />
+            {question.options.map((option, optionIndex) => (
+              <div key={option.id}>
                 <InputText
                   fullWidth
                   control={control}
-                  rules={quizRules.quizQuestion}
-                  name={`quizData[${questionIndex}].text`}
-                  label={`Question ${questionIndex + 1} text`}
+                  defaultValue={option.text}
+                  required
+                  name={`questions[${questionIndex}].options[${optionIndex}].text`}
+                  label={`Option ${optionIndex + 1}`} />
+                <Checkbox
+                  defaultChecked={option.isCorrect}
+                  {...register(`questions[${questionIndex}].options[${optionIndex}].isCorrect`)}
+                  color="primary"
+                  label={'Mark as correct'}
                 />
-              </Grid>
-              {question.options.map((option, optionIndex) => (
-                <Grid item xs={12} key={optionIndex}>
-                  <InputText
-                    fullWidth
-                    control={control}
-                    name={`quizData[${questionIndex}].options[${optionIndex}].text`}
-                    label={`Option ${optionIndex + 1} text`}
-                  />
-                  <Checkbox
-                    checked={option.isCorrect}
-                    onChange={handleCheckboxChange(questionIndex, optionIndex)}
-                  />
-                  <label>Mark as Correct</label>
-                </Grid>
-              ))}
-            </Grid>
+                <label htmlFor='checkbox'>Mark as correct</label>
+                <Button
+                  sx={{ ml: '20px' }}
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => removeOption(questionIndex, option.id)}
+                >
+                  Remove
+                </Button>
+              </div>
+            ))}
+            <Button
+              sx={{ m: '20px' }}
+              variant="outlined"
+              color="primary"
+              onClick={() => addOption(questionIndex)}
+              startIcon={<AddIcon />}
+            >
+              Add Option
+            </Button>
           </div>
         ))}
-        <Grid item xs={12}>
-          <Button onClick={addQuestion} variant="contained" color="primary">
-            Add Question
-          </Button>
-          <Button type="submit" variant="contained" color="primary">
-            Create Quiz
-          </Button>
-        </Grid>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={addQuestion}
+          startIcon={<AddIcon />}
+        >
+          Add Question
+        </Button>
+        <Button
+          sx={{ ml: '50px' }}
+          type="submit"
+          variant="contained"
+          color="primary"
+        >
+          Submit
+        </Button>
       </form>
-    </Container>
+    </>
   );
 }
+
+export default QuestionForm;

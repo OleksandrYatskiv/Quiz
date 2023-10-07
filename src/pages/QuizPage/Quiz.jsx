@@ -25,6 +25,7 @@ import { answersCSS } from '../../api/Answers/answersCSS';
 import { answersJava } from '../../api/Answers/answersJava';
 import { answersPython } from '../../api/Answers/answersPython';
 import NotFoundPage from '../NotFound/NotFoundPage';
+import { answersUserQuiz } from '../../api/Answers/answersUserQuiz';
 
 export default function Quiz() {
   const { quizId } = useParams();
@@ -90,6 +91,7 @@ export default function Quiz() {
           answersResponse = await answersPython.get();
           break;
         default:
+          answersResponse = await answersUserQuiz.get();
           break;
       }
       setQuestions(answersResponse);
