@@ -1,40 +1,25 @@
 import {
-  Button, Container, Grid, TextField, Typography,
+  Button, Container, Grid, Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { quizzes } from '../../api/Quizzes/Quizzes';
+import InputText from '../../components/Forms/InputText';
+import { quizRules } from '../../components/Forms/constants';
 
 export default function CreateQuizPage() {
-  const [quizData, setQuizData] = useState({
-    image: '',
-    name: '',
-    description: '',
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setQuizData({
-      ...quizData,
-      [name]: value,
-    });
-  };
-
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    quizzes.post(quizData);
-    navigate('/');
-    setQuizData({
-      image: '',
-      name: '',
-      description: '',
-    });
+  const { control, handleSubmit, getValues } = useForm();
+
+  const onSubmit = () => {
+    quizzes.post(getValues());
+    navigate('/quiz/create/questions');
   };
 
   return (
-    <Container sx={{ margin: '90px auto' }} maxWidth="sm">
+    <Container sx={{ margin: '100px auto' }} maxWidth="sm">
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -43,42 +28,36 @@ export default function CreateQuizPage() {
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              label="Quiz Name"
-              variant="outlined"
+            <InputText
               fullWidth
-              name="name"
-              value={quizData.name}
-              onChange={handleChange}
-              required
+              control={control}
+              name='name'
+              rules={quizRules.quizName}
+              label='Quiz name'
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              label="Image link"
-              variant="outlined"
+            <InputText
               fullWidth
-              name="image"
-              value={quizData.image}
-              onChange={handleChange}
-              required
+              control={control}
+              name='image'
+              rules={quizRules.quizImage}
+              label='Image link'
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              label="Quiz description"
-              variant="outlined"
+            <InputText
               fullWidth
+              control={control}
+              name='description'
+              rules={quizRules.quizDescription}
+              label='Quiz description'
               multiline
               rows={4}
-              name="description"
-              value={quizData.description}
-              onChange={handleChange}
-              required
             />
           </Grid>
           <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary" fullWidth>
+            <Button onClick={handleSubmit(onSubmit)} variant="contained" color="primary" fullWidth>
               Create Quiz
             </Button>
           </Grid>

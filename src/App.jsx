@@ -9,6 +9,7 @@ import Favourites from './pages/Favourites/Favourites';
 import Quiz from './pages/QuizPage/Quiz';
 import QuizStartPage from './pages/QuizPage/StartPage';
 import store from './store/store';
+import CreateQuestionsPage from './pages/CreateQuiz/CreateQuestionsPage';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
             <Route index element={<Homepage />} />
             <Route path="*" element={<NotFoundPage />} />
             <Route path='quiz/create' element={<CreateQuizPage />} />
+            <Route path='quiz/create/questions' element={<CreateQuestionsPage />} />
             <Route path='quiz/favourites' element={<Favourites />} />
             <Route path='quiz/:quizId' element={<Quiz />} />
             <Route path='quizStartPage/:quizId' element={<QuizStartPage />} />
